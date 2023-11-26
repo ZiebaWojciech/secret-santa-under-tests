@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+ mongodb:
+  image : mongo:6.0.5
+  container_name: mongodb-secret-santa
+  environment:
+  - MONGO_INITDB_ROOT_USERNAME=santa_claus
+  - MONGO_INITDB_ROOT_PASSWORD=bad_children
+  ports:
+   - "27037:27017"
+  restart: unless-stopped
