@@ -36,7 +36,7 @@ class GiftControllerTest {
     @Test
     void shouldReturnOk_andMatchedPersonName_whenGiftMatched() throws Exception {
         // given
-        doReturn("Wojtek")
+        doReturn(new GiftRegistrationResponse("Wojtek", MatchingLevel.NONE))
                 .when(giftService).registerGift(any());
 
         // when
@@ -50,7 +50,14 @@ class GiftControllerTest {
                 .getResponse();
 
         // then
-        assertThat(result.getContentAsString()).isEqualTo("Wojtek");
+        assertThat(result.getContentAsString()).isEqualTo(
+                """
+                        {
+                            "name":"Wojtek",
+                            "matchingLevel":"NONE"
+                        }
+                        """
+        );
     }
 
 
