@@ -62,7 +62,7 @@ class GiftControllerTest {
                     "gifter": "Maciej",
                     "colour": "niebieski",
                     "gift": "dodatkowe zadanie",
-                    §"relatedHobby": "nadgodziny"
+                    "relatedHobby": "nadgodziny"
                 }
                 """;
 
@@ -76,6 +76,31 @@ class GiftControllerTest {
                                 .content(giftRegistrationRequest)
                 ).andExpect(
                         status().isNotFound()
+        );
+    }
+
+    @Test
+    void shouldReturnBadRequest_whenTooFewPeopleRegistered() throws Exception {
+        // given
+        var giftRegistrationRequest = """
+                {
+                    "gifter": "Maciej",
+                    "colour": "niebieski",
+                    "gift": "dodatkowe zadanie",
+                    "relatedHobby": "nadgodziny"
+                }
+                """;
+
+        doThrow(TooFewParticipantsException.class)
+                .when(giftService).registerGift();
+
+        // when-then
+        mockMvc.perform(
+                post("/gifts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(giftRegistrationRequest)
+        ).andExpect(
+                status().isBadRequest()
         );
     }
 }

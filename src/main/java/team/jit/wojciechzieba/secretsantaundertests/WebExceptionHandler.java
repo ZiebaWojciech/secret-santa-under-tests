@@ -11,4 +11,8 @@ class WebExceptionHandler {
     @ExceptionHandler(GifterNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     void handleGifterNotFound() {}
+
+    @ExceptionHandler(TooFewParticipantsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    void handleTooFewParticipants() {}
 }
