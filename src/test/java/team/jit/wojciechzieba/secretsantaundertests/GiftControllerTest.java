@@ -24,10 +24,7 @@ class GiftControllerTest {
     @MockBean
     private GiftService giftService;
 
-    @Test
-    void shouldReturnOk_andMatchedPersonName_whenGiftMatched() throws Exception {
-        // given
-        var giftRegistrationRequest = """
+    private final static String VALID_REQUEST = """
                 {
                     "gifter": "Maciej",
                     "colour": "niebieski",
@@ -36,6 +33,9 @@ class GiftControllerTest {
                 }
                 """;
 
+    @Test
+    void shouldReturnOk_andMatchedPersonName_whenGiftMatched() throws Exception {
+        // given
         doReturn("Wojtek")
                 .when(giftService).registerGift();
 
@@ -43,7 +43,7 @@ class GiftControllerTest {
         var result = mockMvc.perform(
                         post("/gifts")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(giftRegistrationRequest)
+                                .content(VALID_REQUEST)
                 ).andExpect(
                         status().isOk()
                 ).andReturn()
@@ -57,15 +57,6 @@ class GiftControllerTest {
     @Test
     void shouldReturnBadRequest_whenGifterNotFound() throws Exception {
         // given
-        var giftRegistrationRequest = """
-                {
-                    "gifter": "Maciej",
-                    "colour": "niebieski",
-                    "gift": "dodatkowe zadanie",
-                    "relatedHobby": "nadgodziny"
-                }
-                """;
-
         doThrow(GifterNotFoundException.class)
                 .when(giftService).registerGift();
 
@@ -73,7 +64,7 @@ class GiftControllerTest {
         mockMvc.perform(
                         post("/gifts")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(giftRegistrationRequest)
+                                .content(VALID_REQUEST)
                 ).andExpect(
                         status().isNotFound()
         );
@@ -82,14 +73,6 @@ class GiftControllerTest {
     @Test
     void shouldReturnBadRequest_whenTooFewPeopleRegistered() throws Exception {
         // given
-        var giftRegistrationRequest = """
-                {
-                    "gifter": "Maciej",
-                    "colour": "niebieski",
-                    "gift": "dodatkowe zadanie",
-                    "relatedHobby": "nadgodziny"
-                }
-                """;
 
         doThrow(TooFewParticipantsException.class)
                 .when(giftService).registerGift();
@@ -98,7 +81,7 @@ class GiftControllerTest {
         mockMvc.perform(
                 post("/gifts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(giftRegistrationRequest)
+                        .content(VALID_REQUEST)
         ).andExpect(
                 status().isBadRequest()
         );
