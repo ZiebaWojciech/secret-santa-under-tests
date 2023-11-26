@@ -17,6 +17,6 @@ class GiftController {
     @PostMapping("/gifts")
     @ResponseStatus(HttpStatus.OK)
     String registerGift() {
-        return giftService.registerGift();
+        return giftService.registerGift(giftRegistrationCommand);
     }
 }

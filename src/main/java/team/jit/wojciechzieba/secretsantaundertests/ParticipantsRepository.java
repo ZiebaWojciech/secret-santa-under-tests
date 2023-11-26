@@ -6,4 +6,6 @@ public interface ParticipantsRepository {
     List<Participant> getAll();
 
     String save(Participant participant);
+
+    Participant getByName(String name);
 }

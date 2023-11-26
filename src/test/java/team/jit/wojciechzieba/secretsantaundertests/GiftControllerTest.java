@@ -1,10 +1,8 @@
 package team.jit.wojciechzieba.secretsantaundertests;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,7 +35,7 @@ class GiftControllerTest {
     void shouldReturnOk_andMatchedPersonName_whenGiftMatched() throws Exception {
         // given
         doReturn("Wojtek")
-                .when(giftService).registerGift();
+                .when(giftService).registerGift(giftRegistrationCommand);
 
         // when
         var result = mockMvc.perform(
@@ -58,7 +56,7 @@ class GiftControllerTest {
     void shouldReturnBadRequest_whenGifterNotFound() throws Exception {
         // given
         doThrow(GifterNotFoundException.class)
-                .when(giftService).registerGift();
+                .when(giftService).registerGift(giftRegistrationCommand);
 
         // when-then
         mockMvc.perform(
@@ -75,7 +73,7 @@ class GiftControllerTest {
         // given
 
         doThrow(TooFewParticipantsException.class)
-                .when(giftService).registerGift();
+                .when(giftService).registerGift(giftRegistrationCommand);
 
         // when-then
         mockMvc.perform(
