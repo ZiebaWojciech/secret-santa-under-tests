@@ -5,6 +5,12 @@ import java.util.UUID;
 
 class ParticipantTestFactory {
 
+    public final static Participant MACIEJ_ABSYNTH_ENJOYER = ParticipantBuilder.participant()
+            .withName("Maciej")
+            .withHobby("absynt")
+            .withFavouriteColour("zielony")
+            .build();
+
     static class ParticipantBuilder {
         private String name;
         private String hobby;

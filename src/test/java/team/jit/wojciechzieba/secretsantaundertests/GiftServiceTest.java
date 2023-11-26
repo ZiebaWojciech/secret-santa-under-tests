@@ -1,5 +1,7 @@
 package team.jit.wojciechzieba.secretsantaundertests;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,26 +31,28 @@ class GiftServiceTest {
     void shouldReturnParticipantWithSameHobby_whenGiftWithHobbySentInRequest() {
         // given
         doReturn(
-                ParticipantBuilder.participant()
-                        .withName("Maciej")
-                        .withHobby("absynt")
-                        .withFavouriteColour("zielony")
-                        .build()
-        ).when(participantsRepositoryMock).getByName("Maciej");
+                List.of(
+                        MACIEJ_ABSYNTH_ENJOYER,
+                        ParticipantBuilder.participant()
+                                .withName("Matylda")
+                                .withHobby("nadgodziny")
+                                .withFavouriteColour("czarny")
+                                .build()
+                )
+        ).when(participantsRepositoryMock).getAll();
 
         GiftRegistrationCommand giftRegistrationCommand = new GiftRegistrationCommand(
                 "Maciej",
                 "czarny",
                 "dodatkowe zadanie",
                 "nadgodziny"
-                );
-
+        );
 
         // when
         var result = sut.registerGift(giftRegistrationCommand);
 
         // then
-        Assertions.assertThat(result).isEqualTo("Wojtek");
-
+        Assertions.assertThat(result.name()).isEqualTo("Matylda");
+        Assertions.assertThat(result.matchingLevel()).isEqualTo(MatchingLevel.HOBBY);
     }
 }

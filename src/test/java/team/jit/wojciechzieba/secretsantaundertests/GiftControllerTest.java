@@ -1,6 +1,7 @@
 package team.jit.wojciechzieba.secretsantaundertests;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.hamcrest.HamcrestArgumentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -8,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -35,7 +37,7 @@ class GiftControllerTest {
     void shouldReturnOk_andMatchedPersonName_whenGiftMatched() throws Exception {
         // given
         doReturn("Wojtek")
-                .when(giftService).registerGift(giftRegistrationCommand);
+                .when(giftService).registerGift(any());
 
         // when
         var result = mockMvc.perform(
@@ -56,7 +58,7 @@ class GiftControllerTest {
     void shouldReturnBadRequest_whenGifterNotFound() throws Exception {
         // given
         doThrow(GifterNotFoundException.class)
-                .when(giftService).registerGift(giftRegistrationCommand);
+                .when(giftService).registerGift(any());
 
         // when-then
         mockMvc.perform(
@@ -73,7 +75,7 @@ class GiftControllerTest {
         // given
 
         doThrow(TooFewParticipantsException.class)
-                .when(giftService).registerGift(giftRegistrationCommand);
+                .when(giftService).registerGift(any());
 
         // when-then
         mockMvc.perform(
