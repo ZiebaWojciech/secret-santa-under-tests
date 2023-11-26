@@ -11,4 +11,9 @@ class AppConfiguration {
                 springJpaParticipantRepository
         );
     }
+
+    @Bean
+    GiftService giftService() {
+        return new GiftService();
+    }
 }

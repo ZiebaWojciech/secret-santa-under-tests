@@ -8,9 +8,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 class GiftController {
 
+    public GiftController(final GiftService giftService) {
+        this.giftService = giftService;
+    }
+
+    private final GiftService giftService;
+
     @PostMapping("/gifts")
     @ResponseStatus(HttpStatus.OK)
     String registerGift() {
-        return "Wojtek";
+        return giftService.registerGift();
     }
 }
