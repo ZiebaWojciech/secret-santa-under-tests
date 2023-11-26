@@ -6,6 +6,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class AppConfiguration {
     @Bean
+    GiftService giftService(ParticipantsRepository participantsRepository) {
+        return new GiftService(participantsRepository);
+    }
+
+    @Bean
     ParticipantsRepository participantsRepository(SpringJpaParticipantRepository springJpaParticipantRepository) {
         return new DatabaseParticipantsRepository(
                 springJpaParticipantRepository
