@@ -19,9 +19,4 @@ class DatabaseParticipantsRepository implements ParticipantsRepository {
     public String save(Participant participant) {
         return springJpaParticipantRepository.save(participant).id;
     }
-
-    @Override
-    public Participant getByName(final String name) {
-        return null;
-    }
 }
