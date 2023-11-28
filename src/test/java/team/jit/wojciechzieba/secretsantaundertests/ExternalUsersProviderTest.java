@@ -6,7 +6,6 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -50,13 +48,13 @@ class ExternalUsersProviderTest {
         ));
 
         // when
-        ResponseEntity<GiftRegistrationResponse> exchange = testRestTemplate
+        ResponseEntity<GiftRegistrationResponse> response = testRestTemplate
                 .exchange(
                         "/gifts",
                         HttpMethod.POST,
                         new HttpEntity<>(giftRegistrationCommand),
                         GiftRegistrationResponse.class
                 );
-        Assertions.assertEquals(exchange.getStatusCode(), HttpStatusCode.valueOf(200));
+        Assertions.assertEquals(response.getStatusCode(), HttpStatusCode.valueOf(200));
     }
 }

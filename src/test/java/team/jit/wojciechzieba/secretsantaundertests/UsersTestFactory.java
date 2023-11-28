@@ -31,7 +31,7 @@ class UsersTestFactory {
                 },
                 {
                     "name": "Muody",
-                    "hobby": "praca po godzinach",
+                    "hobby": "nadgodziny",
                     "favouriteColour": "tani"
                 }
             ]
