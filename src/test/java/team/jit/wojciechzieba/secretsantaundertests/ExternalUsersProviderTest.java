@@ -3,11 +3,17 @@ package team.jit.wojciechzieba.secretsantaundertests;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -16,19 +22,18 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureWebTestClient
 @ContextConfiguration(classes = ExternalUsersSourceConfiguration.class)
-@WireMockTest
+@WireMockTest(httpPort = 9999)
 class ExternalUsersProviderTest {
 
     @Autowired
-    WebTestClient webTestClient;
+    TestRestTemplate testRestTemplate;
 
     @Autowired
     ObjectMapper objectMapper;
 
     @Test
-    void shouldRegisterGift_whenExternalUserProviderUsed() throws JsonProcessingException {
+    void shouldRegisterGift_whenExternalUserProviderUsed() {
         // given
         GiftRegistrationCommand giftRegistrationCommand = new GiftRegistrationCommand(
                 "Maciej",
@@ -40,16 +45,18 @@ class ExternalUsersProviderTest {
         stubFor(get("/users").willReturn(
                 aResponse()
                         .withStatus(200)
+                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                         .withBody(UsersTestFactory.USERS_JSON)
         ));
 
         // when
-        webTestClient.post()
-                .uri("/gifts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(objectMapper.writeValueAsString(giftRegistrationCommand))
-                .exchange()
-                .expectStatus()
-                .isOk();
+        ResponseEntity<GiftRegistrationResponse> exchange = testRestTemplate
+                .exchange(
+                        "/gifts",
+                        HttpMethod.POST,
+                        new HttpEntity<>(giftRegistrationCommand),
+                        GiftRegistrationResponse.class
+                );
+        Assertions.assertEquals(exchange.getStatusCode(), HttpStatusCode.valueOf(200));
     }
 }

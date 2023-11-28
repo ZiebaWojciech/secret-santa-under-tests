@@ -19,7 +19,7 @@ class UsersProviderParticipantsRepositoryTest {
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private WebClient webClientMock;
 
-    private ParticipantsRepository sut = new UsersProviderParticipantsRepository();
+    private ParticipantsRepository sut = new UsersProviderParticipantsRepository(webClientMock);
 
     @Test
     @Disabled
