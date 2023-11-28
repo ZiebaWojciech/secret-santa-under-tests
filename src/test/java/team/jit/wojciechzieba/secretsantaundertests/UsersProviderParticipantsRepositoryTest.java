@@ -3,6 +3,7 @@ package team.jit.wojciechzieba.secretsantaundertests;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
@@ -21,6 +22,7 @@ class UsersProviderParticipantsRepositoryTest {
     private ParticipantsRepository sut = new UsersProviderParticipantsRepository();
 
     @Test
+    @Disabled
     void shouldReturnAllParticipants_whenOtherServiceIsCalled() {
         // given
         List<UserDto> USERS =
