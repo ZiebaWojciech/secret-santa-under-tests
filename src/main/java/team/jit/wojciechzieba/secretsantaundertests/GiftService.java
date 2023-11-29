@@ -1,6 +1,6 @@
 package team.jit.wojciechzieba.secretsantaundertests;
 
-class GiftService {
+public class GiftService {
     private final ParticipantsRepository participantsRepository;
 
     public GiftService(final ParticipantsRepository participantsRepository) {
